@@ -1,0 +1,56 @@
+<%- include("templates/header") %>
+<div class="coverPic">
+</div>
+<div class="profBody">
+
+    
+    <div class="uDetails">
+        <img class="dPic" src="">
+            <!-- <input type="file" accept="image/*" name="proPic"> -->
+            <!-- <div class="edProPic" id="edProPic">Edit</div> -->
+        <div class="uInfo">
+    
+        </div>
+        <a href="/updateProfile">Edit Details</a>
+    </div>
+    <div class="myPosts">
+    <h1>Posts</h1>
+    <div class="posts"></div>
+    </div>
+</div>
+<%- include("templates/footer") %>
+<script>
+    function getMyPosts(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/getMyPosts",true);
+        xhr.onreadystatechange = function(request, result){
+            if(this.readyState ==4 && this.status == 200){
+                var response = JSON.parse(this.responseText);
+                var postBody = document.querySelector(".posts");
+                displayPosts(postBody, response.data);
+            }
+        }
+        var formData = new FormData();
+        
+        formData.append("aToken", localStorage.getItem("accessToken"));
+        console.log(formData);
+        xhr.send(formData);
+    }
+    function getData(){
+    console.log(window.user);
+    var htm = "";
+    htm+="<div>Welcome "+user.username+"</div>"
+    document.querySelector(".uInfo").innerHTML = htm;
+    document.querySelector(".dPic").src="http://localhost:3000/"+user.displayPic;
+    }
+    var isProfile = true;
+    var isDifProfile = false;
+    function onLoadFuncs(){
+        getUser();
+        getMyPosts();
+    }
+    window.onload = onLoadFuncs;
+</script>
+
+
+
